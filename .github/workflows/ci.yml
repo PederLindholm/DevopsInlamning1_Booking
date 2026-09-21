@@ -17,5 +17,5 @@ jobs:
         with:
           java-version: '17'
           distribution: temurin
-      - run: mvn -b package
+      - run: mvn -B package
 
