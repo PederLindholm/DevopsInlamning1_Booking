@@ -5,6 +5,7 @@ import com.example.inlamningsuppgiftfmp.services.BookingService;
 import com.example.inlamningsuppgiftfmp.services.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,8 @@ public class BookingController {
     private final RoomService roomService;
     private final RestTemplate restTemplate;
 
-
+    @Value("${customer.url}")
+    String customerUrl;
 
     @RequestMapping("/all")
     public String getAllBooking(Model model) {
@@ -41,7 +43,7 @@ public class BookingController {
         try {
             // getting all the information of all customers:
             ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
-                    "http://customerservice:8081/customers/all",
+                    customerUrl + "/customers/all",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Map<String, Object>>>() {}
@@ -103,7 +105,7 @@ public class BookingController {
 
         try {
             ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
-                    "http://customerservice:8081/customers/all",
+                    customerUrl + "/customers/all",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Map<String, Object>>>() {}
@@ -133,7 +135,7 @@ public class BookingController {
 
         try {
             boolean customerExists = restTemplate.getForObject(
-                    "http://customerservice:8081/customers/" + bookingDto.getCustomerId(),
+                    customerUrl + "/customers/" + bookingDto.getCustomerId(),
                     Object.class
             ) != null;
 
@@ -168,7 +170,7 @@ public class BookingController {
     private List<Map<String, Object>> fetchAllCustomersOrEmpty(Model model) {
         try {
             ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
-                    "http://customerservice:8081/customers/all",
+                    customerUrl + "/customers/all",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Map<String, Object>>>() {}
@@ -201,7 +203,7 @@ public class BookingController {
 
         try {
             boolean customerExists = restTemplate.getForObject(
-                    "http://customerservice:8081/customers/" + bookingDto.getCustomerId(),
+                    customerUrl + "/customers/" + bookingDto.getCustomerId(),
                     Object.class
             ) != null;
 
