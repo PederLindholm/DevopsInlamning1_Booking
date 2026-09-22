@@ -2,6 +2,8 @@ package com.example.inlamningsuppgiftfmp.controllers;
 
 import com.example.inlamningsuppgiftfmp.dtos.CustomerDto;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ import java.util.Map;
 @RequestMapping(path = "/customer")
 public class CustomerController {
 
+    @Value("${customer.url}")
+    String customerUrl;
 
     private final RestTemplate restTemplate;
 
@@ -34,7 +38,7 @@ public class CustomerController {
     public String getAll(Model model, RedirectAttributes redirectAttributes) {
         try {
             ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
-                    "http://customerservice:8081/customers/all",
+                    customerUrl + "/customers/all",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Map<String, Object>>>() {}
