@@ -63,7 +63,7 @@ public class CustomerController {
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes){
         try {
             restTemplate.exchange(
-                    "http://customerservice:8081/customers/" + id,
+                    customerUrl + "/customers/" + id,
                     HttpMethod.DELETE,
                     null,
                     Void.class
@@ -84,7 +84,7 @@ public class CustomerController {
 
         try {
             CustomerDto customer = restTemplate.getForObject(
-                    "http://customerservice:8081/customers/" + id,
+                    customerUrl + "/customers/" + id,
                     CustomerDto.class
             );
         model.addAttribute("customerDto", customer);
@@ -112,7 +112,7 @@ public class CustomerController {
 
         try {
             restTemplate.put(
-                    "http://customerservice:8081/customers",
+                    customerUrl + "/customers",
                     customerDto
             );
         } catch (HttpClientErrorException e) {
@@ -144,7 +144,7 @@ public class CustomerController {
 
         try {
             restTemplate.postForObject(
-                    "http://customerservice:8081/customers",
+                    customerUrl + "/customers",
                     customerDto, CustomerDto.class
             );
         } catch (HttpClientErrorException e) {
